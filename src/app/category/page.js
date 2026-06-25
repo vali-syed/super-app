@@ -1,63 +1,64 @@
 "use client"
 
-import {useState,useEffect} from 'react'
+import {useState} from 'react'
 import Image from 'next/image'
 import {singleDay} from "../layout"
 import {useRouter} from "next/navigation"
+import useCategoryStore from "@/store/useCategoryStore"
 
 const categories = [
   {
     id: 1,
     name: "Action",
-    imageUrl: "",
+    imageUrl:"/images/action.png",
     bgColor: "#FF5209",
   },
   {
     id: 2,
     name: "Drama",
-    imageUrl: "",
+    imageUrl: "/images/drama.png",
     bgColor: "#D7A4FF",
   },
   {
     id: 3,
     name: "Romance",
-    imageUrl: "",
+    imageUrl: "/images/romance.png",
     bgColor: "#148A08",
   },
   {
     id: 4,
     name: "Thriller",
-    imageUrl: "",
+    imageUrl: "/images/thriller.png",
     bgColor: "#84C2FF",
   },
   {
     id: 5,
     name: "Western",
-    imageUrl: "",
+    imageUrl: "/images/western.png",
     bgColor: "#902500",
   },
   {
     id: 6,
     name: "Horror",
-    imageUrl: "",
+    imageUrl: "/images/horror.png",
     bgColor: "#7358FF",
   },
   {
     id: 7,
     name: "Fantasy",
-    imageUrl: "",
+    imageUrl: "/images/fantasy.png",
     bgColor: "#FF4ADE",
   },
   {
     id: 8,
     name: "Music",
-    imageUrl: "",
+    imageUrl: "/images/music.png",
     bgColor: "#E61E32",
   },
   {
     id: 9,
     name: "Fiction",
-    imageUrl: "",
+    imageUrl: "/images/fiction.png",
     bgColor: "#6CD061",
   },
 ];
@@ -65,17 +66,11 @@ const categories = [
 export default function CategoryPage() {
 
     const router = useRouter();
+    const selectedCategories = useCategoryStore((state) => state.categories);
+    const setSelectedCategories = useCategoryStore((state) => state.setCategories);
+    const setCategories = useCategoryStore((state) => state.setCategories);
 
-    const [selectedCategories, setSelectedCategories] = useState([]);
     const [showError, setShowError] = useState(false);
-
-    useEffect(() => {
-        const savedCategories = JSON.parse(localStorage.getItem("categories"));
-
-        if (savedCategories) {
-            setSelectedCategories(savedCategories);
-        }
-    }, []);
 
     const handleCategoryClick = (categoryName) => {
     const alreadySelected =
@@ -103,10 +98,7 @@ export default function CategoryPage() {
 
     setShowError(false);
 
-    localStorage.setItem(
-        "categories",
-        JSON.stringify(selectedCategories)
-    );
+    setCategories(selectedCategories);
 
     router.push("/dashboard");
     };
@@ -183,6 +175,8 @@ export default function CategoryPage() {
                         <Image
                             src={category.imageUrl}
                             alt={category.name}
+                            width={209}
+                            height={118}
                         />
                         </div>
                     ))}

@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { singleDay } from "../layout";
+import useUserStore from "@/store/useUserStore";
 
 export default function SignUpForm(){
 
     const router = useRouter();
+    const user = useUserStore((state) => state.user);
+    const setUser = useUserStore((state) => state.setUser);
     const [formData, setFormData] = useState({
         name: "",
         username: "",
@@ -20,6 +23,12 @@ export default function SignUpForm(){
         email: "",
         mobile: "",
     });
+
+    useEffect(() => {
+        if (user) {
+            router.replace("/category");
+        }
+    }, [router,user]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -77,8 +86,8 @@ export default function SignUpForm(){
             mobile: formData.mobile.trim(),
         };
 
-        localStorage.setItem("user", JSON.stringify(user));
-        router.push("/category");
+        setUser(user);
+        router.replace("/category");
     };
 
     return (
