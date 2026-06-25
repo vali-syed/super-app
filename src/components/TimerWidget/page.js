@@ -2,6 +2,31 @@
 
 import { useEffect, useMemo, useState } from "react";
 
+function ArrowButton({ direction, onClick }) {
+  const rotation = direction === "up" ? "rotate(0 8 8)" : "rotate(180 8 8)";
+
+  return (
+    <button onClick={onClick} className="flex h-4 w-4 items-center justify-center">
+      <svg viewBox="0 0 16 16" className="h-3.5 w-3.5" aria-hidden="true">
+        <path d="M8 4 L13 10 H3 Z" fill="#8E8E8E" transform={rotation} />
+      </svg>
+    </button>
+  );
+}
+
+function TimeControl({ label, value, onIncrease, onDecrease }) {
+  return (
+    <div className="flex w-[72px] flex-col items-center">
+      <p className="text-[14px] font-medium text-[#8E8E8E]">{label}</p>
+      <ArrowButton direction="up" onClick={onIncrease} />
+      <p className="my-1 text-[24px] font-light leading-none text-white tabular-nums">
+        {String(value).padStart(2, "0")}
+      </p>
+      <ArrowButton direction="down" onClick={onDecrease} />
+    </div>
+  );
+}
+
 export default function TimerWidget() {
   const initialHours = 5;
   const initialMinutes = 8;
@@ -26,11 +51,6 @@ export default function TimerWidget() {
 
   useEffect(() => {
     if (!isRunning) return;
-
-    if (hours === 0 && minutes === 0 && seconds === 0) {
-      setIsRunning(false);
-      return;
-    }
 
     const timer = setInterval(() => {
       setSeconds((currentSeconds) => {
@@ -85,98 +105,71 @@ export default function TimerWidget() {
     setIsRunning((current) => !current);
   };
 
-  const handleReset = () => {
-    setHours(initialHours);
-    setMinutes(initialMinutes);
-    setSeconds(initialSeconds);
-    setIsRunning(false);
-  };
+  const radius = 48;
+  const circumference = 2 * Math.PI * radius;
 
   return (
-    <div className="w-full max-w-[1038px] h-[333px] bg-[#1E2343] rounded-[24px] flex items-center px-10 overflow-hidden">
-      <div className="w-[220px] h-[220px] flex items-center justify-center shrink-0">
-        <div className="relative w-[180px] h-[180px] flex items-center justify-center shadow-[0_0_40px_rgba(0,0,0,0.4)]">
-          <svg className="absolute inset-0" viewBox="0 0 180 180">
+    <div className="flex h-[200px] w-full items-center rounded-[12px] bg-[#1E2343] px-8 py-4">
+      <div className="flex w-[160px] shrink-0 items-center justify-center">
+        <div className="relative flex h-[150px] w-[150px] items-center justify-center rounded-full bg-[#191E39]">
+          <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 ${radius * 2} ${radius * 2}`}>
             <circle
-              cx="90"
-              cy="90"
-              r="78"
+              cx={radius}
+              cy={radius}
+              r={radius}
               fill="none"
-              stroke="#2B2F53"
-              strokeWidth="8"
+              stroke="#2A2F55"
+              strokeWidth="4"
             />
             <circle
-              cx="90"
-              cy="90"
-              r="78"
+              cx={radius}
+              cy={radius}
+              r={radius}
               fill="none"
-              stroke="#ff6a6a"
-              strokeWidth="8"
+              stroke="#FF6A6A"
+              strokeWidth="4"
               strokeLinecap="round"
-              strokeDasharray={`${2 * Math.PI * 78}`}
-              strokeDashoffset={`${2 * Math.PI * 78 * (1 - progress / 100)}`}
-              transform="rotate(-90 90 90)"
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference * (progress / 100)}
+              transform={`rotate(-90 ${radius} ${radius})`}
             />
           </svg>
-          <span className="relative text-white text-[28px] font-semibold whitespace-nowrap tabular-nums">
-            {String(hours).padStart(2, "0")}:
-            {String(minutes).padStart(2, "0")}:
-            {String(seconds).padStart(2, "0")}
+          <span className="relative text-[16px] font-semibold tracking-[0.02em] text-white tabular-nums">
+            {String(hours).padStart(2, "0")}:{String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </span>
         </div>
       </div>
 
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <div className="flex justify-evenly text-[#949494] text-[20px] lg:text-[24px] font-medium">
-          <p>Hours</p>
-          <p>Minutes</p>
-          <p>Seconds</p>
+      <div className="flex min-w-0 flex-1 flex-col items-center">
+        <div className="flex items-center justify-center gap-5">
+          <TimeControl
+            label="Hours"
+            value={hours}
+            onIncrease={() => changeHours(1)}
+            onDecrease={() => changeHours(-1)}
+          />
+          <span className="mt-6 text-[28px] leading-none text-white">:</span>
+          <TimeControl
+            label="Minutes"
+            value={minutes}
+            onIncrease={() => changeMinutes(1)}
+            onDecrease={() => changeMinutes(-1)}
+          />
+          <span className="mt-6 text-[28px] leading-none text-white">:</span>
+          <TimeControl
+            label="Seconds"
+            value={seconds}
+            onIncrease={() => changeSeconds(1)}
+            onDecrease={() => changeSeconds(-1)}
+          />
         </div>
 
-        <div className="flex justify-evenly items-center mt-6">
-          <div className="flex flex-col items-center">
-            <button onClick={() => changeHours(1)} className="text-[#949494] text-3xl leading-none">+</button>
-            <h1 className="text-white text-[48px] lg:text-[54px] font-light leading-none tabular-nums">
-              {String(hours).padStart(2, "0")}
-            </h1>
-            <button onClick={() => changeHours(-1)} className="text-[#949494] text-3xl leading-none">-</button>
-          </div>
-
-          <span className="text-white text-[48px] lg:text-[54px] leading-none">:</span>
-
-          <div className="flex flex-col items-center">
-            <button onClick={() => changeMinutes(1)} className="text-[#949494] text-3xl leading-none">+</button>
-            <h1 className="text-white text-[48px] lg:text-[54px] font-light leading-none tabular-nums">
-              {String(minutes).padStart(2, "0")}
-            </h1>
-            <button onClick={() => changeMinutes(-1)} className="text-[#949494] text-3xl leading-none">-</button>
-          </div>
-
-          <span className="text-white text-[48px] lg:text-[54px] leading-none">:</span>
-
-          <div className="flex flex-col items-center">
-            <button onClick={() => changeSeconds(1)} className="text-[#949494] text-3xl leading-none">+</button>
-            <h1 className="text-white text-[48px] lg:text-[54px] font-light leading-none tabular-nums">
-              {String(seconds).padStart(2, "0")}
-            </h1>
-            <button onClick={() => changeSeconds(-1)} className="text-[#949494] text-3xl leading-none">-</button>
-          </div>
-        </div>
-
-        <div className="flex justify-center mt-8 gap-4">
-          <button
-            onClick={handleStartPause}
-            className="bg-[#ff6a6a] text-white w-[320px] h-[60px] rounded-full text-[30px]"
-          >
-            {isRunning ? "Pause" : "Start"}
-          </button>
-          <button
-            onClick={handleReset}
-            className="bg-transparent border border-[#ff6a6a] text-[#ff6a6a] w-[120px] h-[60px] rounded-full text-[20px]"
-          >
-            Reset
-          </button>
-        </div>
+        <button
+          onClick={handleStartPause}
+          className="mt-3 h-[28px] w-[180px] rounded-full bg-[#FF6A6A] text-[18px] leading-none text-white"
+        >
+          {isRunning ? "Pause" : "Start"}
+        </button>
       </div>
     </div>
   );

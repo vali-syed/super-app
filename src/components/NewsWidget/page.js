@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function NewsWidget() {
     const [articles, setArticles] = useState([]);
@@ -59,7 +60,7 @@ export default function NewsWidget() {
 
     if (loading) {
         return (
-            <div className="w-full max-w-[463px] h-[700px] rounded-3xl overflow-hidden bg-black text-white flex items-center justify-center">
+            <div className="w-full h-full rounded-[8px] overflow-hidden bg-black text-white flex items-center justify-center">
                 Loading news...
             </div>
         );
@@ -67,7 +68,7 @@ export default function NewsWidget() {
 
     if (error) {
         return (
-            <div className="w-full max-w-[463px] h-[700px] rounded-3xl overflow-hidden bg-black text-red-400 flex items-center justify-center">
+            <div className="w-full h-full rounded-[8px] overflow-hidden bg-black text-red-400 flex items-center justify-center">
                 {error}
             </div>
         );
@@ -76,8 +77,9 @@ export default function NewsWidget() {
     const article = articles[currentIndex];
 
     return (
-        <div className="w-full max-w-[463px] h-[700px] lg:h-[907px] rounded-3xl overflow-hidden bg-black">
-            <div className="relative h-[260px] lg:h-[300px]">
+        <div className="w-full flex flex-col items-end h-[90vh]">
+            <div className="w-full h-full rounded-[8px] overflow-hidden bg-black flex flex-col">
+                <div className="relative h-[45%]">
                 {article?.image ? (
                     <Image
                         src={article.image}
@@ -90,21 +92,29 @@ export default function NewsWidget() {
                     <div className="bg-gray-700" />
                 )}
 
-                <div className="absolute bottom-0 left-0 right-0 bg-[#000000]/60 p-4">
-                    <p className="text-[#ffffff] text-lg lg:text-xl font-semibold line-clamp-2">
-                        {article?.title}
-                    </p>
-                    <p className="text-[#ffffff] text-sm mt-2">
-                        {article?.publish_date}
+                    <div className="absolute bottom-0 left-0 right-0 bg-[#000000]/60 p-4">
+                        <p className="text-[#ffffff] text-[18px] font-semibold line-clamp-2">
+                            {article?.title}
+                        </p>
+                        <p className="text-[#ffffff] text-sm mt-2">
+                            {article?.publish_date}
+                        </p>
+                    </div>
+                </div>
+
+                <div className="p-4 h-[55%] bg-[#ffffff] overflow-y-auto">
+                    <p className="text-[#272727] leading-6 text-[12px] break-words">
+                        {article?.summary || article?.text}
                     </p>
                 </div>
             </div>
 
-            <div className="p-5 lg:p-6 h-[440px] lg:h-[607px] bg-[#ffffff] overflow-y-auto">
-                <p className="text-[#272727] font-[18px] leading-7 text-base break-words">
-                    {article?.summary || article?.text}
-                </p>
-            </div>
+            <Link
+                href="/moviespage"
+                className="mt-4 mr-3 inline-flex h-[28px] min-w-[92px] items-center justify-center rounded-full bg-[#0fa114] px-5 text-[12px] font-medium text-white"
+            >
+                Browse
+            </Link>
         </div>
     );
 }

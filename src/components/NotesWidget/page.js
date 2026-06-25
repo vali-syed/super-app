@@ -17,8 +17,8 @@ export default function NotesWidget() {
   }, [notes]);
 
     return (
-    <div className="w-full max-w-[350px] h-[380px] bg-[#F1C75B] rounded-3xl p-6 flex flex-col overflow-hidden">
-      <h1 className="text-[#000000] text-4xl font-bold mb-5">
+    <div className="w-full h-full bg-[#F1C75B] rounded-[12px] p-6 flex flex-col overflow-hidden">
+      <h1 className="text-[#000000] text-[24px] font-bold mb-4">
         All notes
       </h1>
 
@@ -27,7 +27,7 @@ export default function NotesWidget() {
         value={notes}
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Write your notes here..."
-        className="flex-1 bg-transparent outline-none resize-none text-[#000000] text-lg leading-8 overflow-y-auto break-words"
+        className="flex-1 bg-transparent outline-none resize-none text-[#000000] text-[14px] leading-6 overflow-y-auto break-words"
       />
     </div>
   );
