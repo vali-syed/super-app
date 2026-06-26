@@ -95,7 +95,7 @@ export default function SignUpForm(){
             {/*left side conatiner which contains image */}
             <div className="relative w-1/2 hidden lg:block">
                 <Image
-                    src = "/images/concert-night.png"
+                    src = "/Images/concert-night.png"
                     alt = "concert-night"
                     fill
                     className="objext-cover"

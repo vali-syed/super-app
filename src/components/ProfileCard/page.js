@@ -18,13 +18,13 @@ export default function ProfileCard(){
         <main className='flex h-[280px] w-full items-center rounded-[16px] bg-[#5746EA] px-6 py-5 overflow-hidden'>
             <div className='shrink-0'>
                 <Image
-                src = '/images/profile-image.png'
+                src = '/Images/profile-image.png'
                 alt = 'profile image'
                 width = {260}
                 height = {390}
                 className='h-[190px] w-[125px] object-cover rounded-[28px]'
                 loading='eager'
-                />  
+                />
             </div>
             <div className='ml-4 flex min-w-0 flex-1 flex-col justify-center'>
                 <h1 className="truncate text-[15px] leading-none text-white">{profile.name}</h1>
