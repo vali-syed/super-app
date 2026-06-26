@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { singleDay } from "../layout";
+import { singleDay } from "@/lib/fonts";
 import useUserStore from "@/store/useUserStore";
 
 export default function SignUpForm(){

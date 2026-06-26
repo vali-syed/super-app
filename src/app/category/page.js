@@ -1,10 +1,10 @@
 "use client"
 
-import {useState} from 'react'
-import Image from 'next/image'
-import {singleDay} from "../layout"
-import {useRouter} from "next/navigation"
-import useCategoryStore from "@/store/useCategoryStore"
+import { useState } from 'react';
+import Image from 'next/image';
+import { singleDay } from "@/lib/fonts";
+import { useRouter } from "next/navigation";
+import useCategoryStore from "@/store/useCategoryStore";
 
 const categories = [
   {

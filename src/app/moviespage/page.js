@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import useCategoryStore from "@/store/useCategoryStore";
-import { singleDay } from "../layout";
+import { singleDay } from "@/lib/fonts";
 
 const tmdbGenreMap = {
   Action: 28,
