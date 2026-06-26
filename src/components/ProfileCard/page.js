@@ -24,7 +24,7 @@ export default function ProfileCard(){
                 height = {390}
                 className='h-[190px] w-[125px] object-cover rounded-[28px]'
                 loading='eager'
-                />
+                />  
             </div>
             <div className='ml-4 flex min-w-0 flex-1 flex-col justify-center'>
                 <h1 className="truncate text-[15px] leading-none text-white">{profile.name}</h1>
